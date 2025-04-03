@@ -2,7 +2,7 @@
 **Name:** Khai Dye-Brinkman  
 **Student ID:** 300550065
 **Date:** April 03, 2025  
-**Code Repository:** [https://github.com/yourusername/aiml331-assignment1](https://github.com/yourusername/aiml331-assignment1)
+**Code Repository:** ([https://github.com/KhaiShea/aiml331-assignment1](https://github.com/KhaiShea/aiml331-assignment1))
 
 ---
 
