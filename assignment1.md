@@ -115,12 +115,3 @@ plt.show()
 cdf_normalized = cdf * 255 / cdf[-1]
 equalized = np.interp(blurred.flatten(), range(256), cdf_normalized).reshape(img.shape)
 ```
-
----
-
-## ✅ Notes
-
-- Camera transforms used rotation + homogeneous translation.
-- Filtering used both spatial and Fourier domains.
-- Histograms and equalisation implemented via CDF mapping.
-- Code, images, and all scripts are in the GitHub repository.
