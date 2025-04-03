@@ -31,6 +31,8 @@ python code/camera_problem.py
 python code/checkerboard_processing.py
 ```
 
+Ensure that the code is run in the root directory of the repository.
+
 ## 🖼️ Image Credit
 
 Checkerboard image from Wikimedia Commons:  
