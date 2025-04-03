@@ -1,8 +1,8 @@
 # Assignment 1 – AIML331 2025  
 **Name:** Khai Dye-Brinkman  
-**Student ID:** 300550065
+**Student ID:** 300550065  
 **Date:** April 03, 2025  
-**Code Repository:** ([https://github.com/KhaiShea/aiml331-assignment1](https://github.com/KhaiShea/aiml331-assignment1))
+**Code Repository:** [https://github.com/KhaiShea/aiml331-assignment1](https://github.com/KhaiShea/aiml331-assignment1)
 
 ---
 
@@ -63,32 +63,39 @@ Image: https://upload.wikimedia.org/wikipedia/commons/3/3c/Checkerboard_pattern.
 ### 2.2 Histogram and Cumulative Probability Function
 
 ```python
-import cv2
-import matplotlib.pyplot as plt
-
-img = cv2.imread('checkerboard.png', cv2.IMREAD_GRAYSCALE)
+img = cv2.imread("images/checkerboard.png", cv2.IMREAD_GRAYSCALE)
 hist = cv2.calcHist([img], [0], None, [256], [0, 256])
 cdf = hist.cumsum() / hist.sum()
+
 plt.plot(cdf)
-plt.title("CDF")
-plt.show()
+plt.title("CDF of Original Image")
+plt.savefig("images/cdf.png")
 ```
+
+![CDF Plot](images/cdf.png)
+
+---
 
 ### 2.3 Spatial Low-pass Filter
 
 ```python
 blurred = cv2.GaussianBlur(img, (5, 5), 1.0)
+cv2.imwrite("images/blurred.png", blurred)
 ```
+
+![Blurred Image](images/blurred.png)
+
+---
 
 ### 2.4 Separable Filter?
 
 Yes — the Gaussian filter is separable.
 
+---
+
 ### 2.5 Frequency Domain Low-pass Filter
 
 ```python
-import numpy as np
-
 f = np.fft.fft2(img)
 fshift = np.fft.fftshift(f)
 rows, cols = img.shape
@@ -98,20 +105,46 @@ mask[crow-30:crow+30, ccol-30:ccol+30] = 1
 filtered_fshift = fshift * mask
 f_ishift = np.fft.ifftshift(filtered_fshift)
 filtered_img = np.fft.ifft2(f_ishift).real.astype(np.uint8)
+cv2.imwrite("images/frequency_filtered.png", filtered_img)
 ```
 
-### 2.6 Histogram of Filtered Image
+![Frequency Filtered Image](images/frequency_filtered.png)
+
+---
+
+### 2.6 Histogram of Frequency Filtered Image
 
 ```python
 filtered_hist = cv2.calcHist([filtered_img], [0], None, [256], [0, 256])
 plt.plot(filtered_hist)
-plt.title("Histogram of Filtered Image")
-plt.show()
+plt.title("Histogram of Frequency Filtered Image")
+plt.savefig("images/frequency_histogram.png")
 ```
+
+![Histogram of Frequency Filtered Image](images/frequency_histogram.png)
+
+---
 
 ### 2.7 Histogram Equalisation using CDF
 
 ```python
-cdf_normalized = cdf * 255 / cdf[-1]
-equalized = np.interp(blurred.flatten(), range(256), cdf_normalized).reshape(img.shape)
+blurred_hist = cv2.calcHist([blurred], [0], None, [256], [0, 256])
+blurred_cdf = blurred_hist.cumsum() / blurred_hist.sum()
+cdf_normalized = blurred_cdf * 255 / blurred_cdf[-1]
+
+equalized = np.interp(blurred.flatten(), range(256), cdf_normalized).reshape(img.shape).astype(np.uint8)
+cv2.imwrite("images/equalized.png", equalized)
 ```
+
+#### Equalised Image:
+![Equalised Image](images/equalized.png)
+
+#### Histogram After Equalisation:
+```python
+equalized_hist = cv2.calcHist([equalized], [0], None, [256], [0, 256])
+plt.plot(equalized_hist)
+plt.title("Histogram After Equalisation")
+plt.savefig("images/equalized_histogram.png")
+```
+
+![Histogram After Equalisation](images/equalized_histogram.png)
